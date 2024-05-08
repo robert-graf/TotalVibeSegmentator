@@ -1,0 +1,183 @@
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+build-backend = "poetry_dynamic_versioning.backend"
+
+[tool.poetry]
+name = "TotalVibeSegmentator"
+#version = "1.0.0"
+#description = "Framework for out-of-the box whole spine MRI segmentation."
+#authors = ["Hendrik Möller <hendrik.moeller@tum.de>"]
+#repository = "https://github.com/Hendrik-code/spineps"
+#homepage = "https://github.com/Hendrik-code/spineps"
+#license = "???"
+#readme = "README.md"
+#exclude = ["models", "examples"]
+
+[tool.poetry.scripts]
+
+[tool.poetry.dependencies]
+python = "^3.10 || ^3.11 || ^3.12"
+TPTBox = "*"
+
+
+[tool.poetry-dynamic-versioning]
+enable = true
+
+
+[tool.ruff]
+namespace-packages = ["datagen"]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+    "spineps/Unet3D",
+    "spineps/utils/data_iterators.py",
+    "spineps/utils/default_preprocessor.py",
+    "spineps/utils/export_prediction.py",
+    "spineps/utils/get_network_from_plans.py",
+    "spineps/utils/plans_handler.py",
+    "spineps/utils/predictor.py",
+    "spineps/utils/sliding_window_prediction.py",
+    ".toml",
+]
+line-length = 140
+indent-width = 4
+target-version = "py310"
+
+[tool.ruff.lint]
+## Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
+## Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
+## McCabe complexity (`C901`) by default.
+#
+select = [
+    "E",
+    "F",
+    "W",
+    "C901",
+    "I",
+    "N",
+    "UP",
+    "ASYNC",
+    "BLE",
+    "B",
+    "A",
+    "C4",
+    "ICN",
+    "G",
+    "INP",
+    "PIE",
+    "PYI",
+    #"RET",
+    "SIM",
+    "TID",
+    "INT",
+    "ARG",
+    "PTH",
+    "TD005",
+    "FIX003",
+    "FIX004",
+    #"ERA", For clean up
+    #"D", Dockstring For clean up
+    #"ANN", Annoation For clean up
+    "PD",
+    "PGH",
+    "PL",
+    "TRY",
+    "FLY",
+    "NPY",
+    "AIR",
+    "PERF",
+    "FURB",
+    "RUF",
+]
+
+
+ignore = [
+    "SIM112",
+    "F401",
+    "BLE001",
+    "E501",
+    "N801",
+    "PD002",
+    "PERF203",
+    "PTH123",
+    "PGH003",
+    "PLR0911",
+    "PLR0912",
+    "PLR0913",
+    "PLR0915",
+    "PLR2004",
+    "SIM105",
+    "TRY003",
+    "UP038",
+    "N999","E741",
+    "SIM118", # dictionay keys
+    "N802", # function name lowercase
+]
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+ignore-init-module-imports = true
+extend-safe-fixes = ["RUF015", "C419", "C408", "B006"]
+#unnecessary-iterable-allocation-for-first-element = true
+
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.lint.mccabe]
+# Flag errors (`C901`) whenever the complexity level exceeds 5.
+max-complexity = 20
+
+
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# Enable reformatting of code snippets in docstrings.
+docstring-code-format = true
+
+
+
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
+# Add this to your setting.json (user)
+# Ctrl+shift+P settings json
+#"[python]": {
+#        "editor.formatOnSave": true,
+#        "editor.defaultFormatter": "charliermarsh.ruff",
+#        "editor.codeActionsOnSave": {
+#            "source.fixAll": "explicit",
+#            "source.organizeImports": "never"
+#        }
+#      },
+#    "notebook.formatOnSave.enabled": true,
+#    "notebook.codeActionsOnSave": {
+#        "source.fixAll": false,
+#        "source.organizeImports": false
+#    },
