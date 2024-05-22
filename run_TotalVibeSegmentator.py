@@ -16,6 +16,12 @@ idx_models = reversed(range(70, 100))  # first found is used
 
 
 def run_roi(nii: str | Path, out_file: Path | str | None, gpu=None, dataset_id=278, keep_size=False, override=False):
+    try:
+        next(next(iter(model_path.glob(f"*{dataset_id}*"))).glob("*__nnUNetPlans*"))
+    except StopIteration:
+        raise FileNotFoundError(
+            f"Could not find roi-model. Download the model {dataset_id} an put it into {model_path.absolute()}"
+        ) from None
     nii_seg, _ = run_inference_on_file(
         dataset_id, [to_nii(nii, False)], gpu=gpu, out_file=out_file, keep_size=keep_size, override=override, logits=False
     )
@@ -41,8 +47,9 @@ def run_total_seg(
                 break
             except StopIteration:
                 pass
-        logger.print(f"Could not find model. Download the model an put it in to {model_path.absolute()}", Log_Type.FAIL)
-        return
+        else:
+            logger.print(f"Could not find model. Download the model an put it into {model_path.absolute()}", Log_Type.FAIL)
+            return
     if out_path.exists() and not override:
         logger.print(out_path, "already exists. SKIP!", Log_Type.OK)
         return out_path

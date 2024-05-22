@@ -24,10 +24,11 @@ def run_seg(img: Path | str, out_path: Path, override=False, dataset_id=None, gp
                 break
             except StopIteration:
                 pass
-        logger.print(
-            f"Could not find model. Download the model an put it in to {model_path.absolute()}; Known idx {known_idx}", Log_Type.FAIL
-        )
-        return
+        else:
+            logger.print(
+                f"Could not find model. Download the model an put it into {model_path.absolute()}; Known idx {known_idx}", Log_Type.FAIL
+            )
+            return
     if out_path.exists() and not override:
         logger.print(out_path, "already exists. SKIP!", Log_Type.OK)
         return
