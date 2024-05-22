@@ -4,6 +4,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+import torch
 from TPTBox import NII, Image_Reference, Log_Type, Print_Logger
 
 sys.path.append(str(Path(__file__).parent.parent))
@@ -69,13 +70,11 @@ def run_inference_on_file(
     if zoom is not None:
         input_nii = [i.rescale_(zoom) for i in input_nii]
     seg_nii, uncertainty_nii, softmax_logits = run_inference(input_nii, nnunet, logits=logits)
+    if not keep_size:
+        seg_nii.resample_from_to_(og_nii)
     if out_file is not None and (not Path(out_file).exists() or override):
-        if keep_size:
-            seg_nii.save(out_file)
-        else:
-            seg_nii.resample_from_to_(og_nii).save(out_file)
+        seg_nii.save(out_file)
     del nnunet
-    import torch
 
     torch.cuda.empty_cache()
     return seg_nii, softmax_logits

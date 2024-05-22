@@ -2,7 +2,7 @@ from pathlib import Path
 
 import nibabel as nib
 import numpy as np
-import SimpleITK as sitk
+import SimpleITK as sitk  # noqa: N813
 import torch
 from TPTBox import NII, Log_Type, No_Logger
 from TPTBox.core import sitk_utils
