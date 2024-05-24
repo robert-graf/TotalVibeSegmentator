@@ -4,9 +4,10 @@
 ## Installation
 
 
-
+System requirements a Nvidia-GPU with 4 GB of RAM or more. Python 3.10 or higher; 
 
 ```bash
+# Recommended: make a virtual python environment (examples shows anaconda)
 conda create -n "TotalVibeSegmentator" python=3.11.0  
 conda activate TotalVibeSegmentator
 ## Install Pytorch that works with your GPU https://pytorch.org/get-started/locally/
