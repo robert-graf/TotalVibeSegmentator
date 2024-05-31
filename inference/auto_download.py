@@ -1,5 +1,5 @@
 # Copyright 2024 Hartmut Häntze
-# Edided by Robert Graf 2024
+# Edited by Robert Graf 2024
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import os
 import urllib.request
 import zipfile
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 from tqdm import tqdm
 
@@ -49,9 +49,7 @@ def read_config(idx) -> dict["str", float]:
     if ds_path.exists():
         with open(ds_path) as f:
             config_info: dict[str, float] = json.load(f)
-
         return config_info
-
     else:
         return {"dataset_release": 0.0}
 
@@ -74,7 +72,7 @@ def _download_weights(idx=85) -> None:
         with urllib.request.urlopen(str(weights_url)) as response:
             file_size = int(response.info().get("Content-Length", -1))
     except Exception:
-        print("Download attemt failed:", weights_url)
+        print("Download attempt failed:", weights_url)
         return
     print("Downloading pretrained weights...")
 

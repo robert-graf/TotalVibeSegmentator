@@ -35,7 +35,7 @@ def run_total_seg(
     out_path: Path,
     override=False,
     dataset_id=None,
-    gpu=None,
+    gpu: int | None = None,
     logits=False,
     known_idx=idx_models,
     roi_path: str | Path | None = None,
@@ -56,14 +56,23 @@ def run_total_seg(
     if out_path.exists() and not override:
         logger.print(out_path, "already exists. SKIP!", Log_Type.OK)
         return out_path
-    logger.print("run", dataset_id, gpu, kargs, Log_Type.STAGE)
+    selected_gpu = gpu
+    if gpu is None:
+        gpu = "auto"
+    logger.print("run", f"{dataset_id=}, {gpu=}", Log_Type.STAGE)
     try:
         ds_info = get_ds_info(dataset_id)
         orientation = ds_info["orientation"]
-        roi_seg = run_roi(img, roi_path, gpu=gpu, dataset_id=ds_info.get("roi", 278), override=override)
+        roi_seg = run_roi(img, roi_path, gpu=selected_gpu, dataset_id=ds_info.get("roi", 278), override=override)
         roi_seg = to_nii(roi_seg, True)
         return run_inference_on_file(
-            dataset_id, [to_nii(img), roi_seg], override=override, out_file=out_path, gpu=gpu, orientation=orientation, logits=logits
+            dataset_id,
+            [to_nii(img), roi_seg],
+            override=override,
+            out_file=out_path,
+            gpu=selected_gpu,
+            orientation=orientation,
+            logits=logits,
         )
     except Exception:
         logger.print_error()

@@ -37,6 +37,7 @@ def run_inference_on_file(
     gpu=None,
     keep_size=False,
     logits=False,
+    mapping=None,
 ) -> tuple[Image_Reference, np.ndarray | None]:
     if out_file is not None and Path(out_file).exists() and not override:
         return out_file, None
@@ -73,6 +74,8 @@ def run_inference_on_file(
     if zoom is not None:
         input_nii = [i.rescale_(zoom) for i in input_nii]
     seg_nii, uncertainty_nii, softmax_logits = run_inference(input_nii, nnunet, logits=logits)
+    if mapping is not None:
+        seg_nii.map_labels_(mapping)
     if not keep_size:
         seg_nii.resample_from_to_(og_nii)
     if out_file is not None and (not Path(out_file).exists() or override):

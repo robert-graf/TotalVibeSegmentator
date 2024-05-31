@@ -1,35 +1,57 @@
-# TotalVibeSegmentator: Volumetric interpolated breath-hold examination torso segmentation for the NAKO and UKBB full body images  
+# TotalVibeSegmentator: Full Torso Segmentation for the NAKO and UK Biobank in Volumetric Interpolated Breath-hold Examination Body Images 
 
 ![3D Render](/imgs/3d_render_github.png)
-## Installation
+## Installation Guide
 
+### System Requirements
+- Nvidia-GPU with 4 GB of RAM or more.
+- A newer Mac with M2/M3 could work, but we could not test this.
+- Python 3.10 or higher.
 
-System requirements a Nvidia-GPU with 4 GB of RAM or more. Python 3.10 or higher; 
+### Installation Guide
+
+1. Open a command line (search for Terminal on Mac or cmd on Windows in your OS search).
+2. Ensure you have Anaconda (Python) installed.
+3. Navigate to the folder where you want to download the script using `cd [FOLDER PATH]`.
 
 ```bash
-# Recommended: make a virtual python environment (examples shows anaconda)
+# Recommended: make a virtual Python environment (example shows Anaconda)
 conda create -n "TotalVibeSegmentator" python=3.11.0  
 conda activate TotalVibeSegmentator
-## Install Pytorch that works with your GPU https://pytorch.org/get-started/locally/
+
+# Install PyTorch that works with your GPU (follow instructions at https://pytorch.org/get-started/locally/)
 pip install torch torchvision torchaudio
+
+# Install required Python packages
 pip install TPTBox ruamel.yaml configargparse
 pip install nnunetv2 
-#if nnunetv2 does not work try version 2.2.1 (uninstall and reinstall with pip install nnunetv2==2.2.1)
+
+# If nnunetv2 does not work, try version 2.2.1
+# Uninstall the current version and reinstall with the specified version
+#pip uninstall nnunetv2
+#pip install nnunetv2==2.2.1
+
+# Download the scripts (they will be downloaded to your current folder)
+git clone https://github.com/robert-graf/TotalVibeSegmentator.git
+cd TotalVibeSegmentator
 ```
 
 ## Download
 
-Download the nnUNet weights from **TBA** and put them in [Path to this project]/nnUNet/nnUNet_results/
-For the TotalVibeSegmentator you need the ROI model (278) and the newest TotalVibeSegmentator model
+Download the nnUNet weights automatically or if this is not working use this [Mirror](https://syncandshare.lrz.de/getlink/fi85nm6N8cqwHz342Rsqt9/nnUNet_results) and put them in `[Path to this project]/nnUNet/nnUNet_results/`. For the TotalVibeSegmentator, you need the ROI model (278) and the newest TotalVibeSegmentator model.
 
+You must navigate (with cd in your terminal) to the folder containing `run_TotalVibeSegmentator.py`
 ## Run
 ```bash
 # Download the nnUNet weights and put them in [Path to this project]/nnUNet/nnUNet_results/
 conda activate TotalVibeSegmentator
+
 # Total Segmentation
 python run_TotalVibeSegmentator.py --img [IMAGE-PATH] --out_path [OUTPATH] --roi_path [roi_out_path (optional)]
+
 # Spine Instance
 python run_instance_spine_segmentation.py --img [IMAGE-PATH] --out_path [OUTPATH]
+
 # Spine Semantic
 python run_semantic_spine_segmentation.py --img [IMAGE-PATH] --out_path [OUTPATH]
 ```
