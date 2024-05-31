@@ -7,17 +7,19 @@ from TPTBox import Log_Type, Print_Logger, to_nii
 from TypeSaveArgParse import Class_to_ArgParse
 
 sys.path.append(str(Path(__file__).parent))
-from inference.inference_nnunet import get_ds_info  # noqa: I001
+from inference.auto_download import download_weights  # noqa: I001
+from inference.inference_nnunet import get_ds_info
 from inference.inference_nnunet import p as model_path
 from inference.inference_nnunet import run_inference_on_file
 
 logger = Print_Logger()
-instance_models = [517, 515, 513, 511]  # first found is used
+instance_models = [511]  # first found is used
 
 
 def run_seg(img: Path | str, out_path: Path, override=False, dataset_id=None, gpu=None, logits=False, known_idx=instance_models, **kargs):
     if dataset_id is None:
-        for idx in instance_models:
+        for idx in known_idx:
+            download_weights(idx)
             try:
                 next(next(iter(model_path.glob(f"*{idx}*"))).glob("*__nnUNetPlans*"))
                 dataset_id = idx

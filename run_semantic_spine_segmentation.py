@@ -7,7 +7,7 @@ sys.path.append(str(Path(__file__).parent))
 from run_instance_spine_segmentation import Arguments, run_seg
 
 logger = Print_Logger()
-instance_models = [518, 516, 514, 512]
+instance_models = [512]
 
 
 if __name__ == "__main__":

@@ -8,6 +8,7 @@ import torch
 from TPTBox import NII, Image_Reference, Log_Type, Print_Logger
 
 sys.path.append(str(Path(__file__).parent.parent))
+from inference.auto_download import download_weights
 
 idx = 70
 
@@ -19,7 +20,7 @@ def get_ds_info(idx) -> dict:
     try:
         nnunet_path = next(next(iter(p.glob(f"*{idx}*"))).glob("*__nnUNetPlans*"))
     except StopIteration:
-        Print_Logger().print(f"Pleas add Dataset {idx} to {p}", Log_Type.FAIL)
+        Print_Logger().print(f"Please add Dataset {idx} to {p}", Log_Type.FAIL)
         p.mkdir(exist_ok=True, parents=True)
         exit()
     with open(Path(nnunet_path, "dataset.json")) as f:
@@ -41,6 +42,8 @@ def run_inference_on_file(
         return out_file, None
 
     from spineps_.utils.inference_api import load_inf_model, run_inference
+
+    download_weights(idx)
 
     nnunet_path = next(next(iter(p.glob(f"*{idx}*"))).glob("*__nnUNetPlans*"))
     folds = [int(f.name.split("fold_")[-1]) for f in nnunet_path.glob("fold*")]

@@ -7,16 +7,18 @@ from TPTBox import Log_Type, Print_Logger, to_nii
 from TypeSaveArgParse import Class_to_ArgParse
 
 sys.path.append(str(Path(__file__).parent))
-from inference.inference_nnunet import get_ds_info  # noqa: I001
+from inference.auto_download import download_weights  # noqa: I001
+from inference.inference_nnunet import get_ds_info
 from inference.inference_nnunet import p as model_path
 from inference.inference_nnunet import run_inference_on_file
 
 logger = Print_Logger()
-idx_models = reversed(range(70, 100))  # first found is used
+idx_models = [85]  # first found is used
 
 
 def run_roi(nii: str | Path, out_file: Path | str | None, gpu=None, dataset_id=278, keep_size=False, override=False):
     try:
+        download_weights(dataset_id)
         next(next(iter(model_path.glob(f"*{dataset_id}*"))).glob("*__nnUNetPlans*"))
     except StopIteration:
         raise FileNotFoundError(
@@ -41,6 +43,7 @@ def run_total_seg(
 ):
     if dataset_id is None:
         for idx in known_idx:
+            download_weights(idx)
             try:
                 next(next(iter(model_path.glob(f"*{idx}*"))).glob("*__nnUNetPlans*"))
                 dataset_id = idx
