@@ -13,7 +13,7 @@ from inference.inference_nnunet import p as model_path
 from inference.inference_nnunet import run_inference_on_file
 
 logger = Print_Logger()
-idx_models = [85]  # first found is used
+idx_models = [86, 85]  # first found is used
 
 
 def run_roi(nii: str | Path, out_file: Path | str | None, gpu=None, dataset_id=278, keep_size=False, override=False):
@@ -39,6 +39,8 @@ def run_total_seg(
     logits=False,
     known_idx=idx_models,
     roi_path: str | Path | None = None,
+    keep_size=False,
+    fill_holes=False,
     **kargs,
 ):
     if dataset_id is None:
@@ -73,6 +75,8 @@ def run_total_seg(
             gpu=selected_gpu,
             orientation=orientation,
             logits=logits,
+            keep_size=keep_size,
+            fill_holes=fill_holes,
         )
     except Exception:
         logger.print_error()
@@ -86,6 +90,8 @@ class Arguments(Class_to_ArgParse):
     override: bool = False
     gpu = None
     dataset_id: int | None = None
+    keep_size: bool = False
+    fill_holes: bool = False
 
 
 if __name__ == "__main__":

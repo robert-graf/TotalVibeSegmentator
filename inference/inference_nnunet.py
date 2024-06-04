@@ -36,6 +36,7 @@ def run_inference_on_file(
     override=False,
     gpu=None,
     keep_size=False,
+    fill_holes=False,
     logits=False,
     mapping=None,
 ) -> tuple[Image_Reference, np.ndarray | None]:
@@ -78,6 +79,8 @@ def run_inference_on_file(
         seg_nii.map_labels_(mapping)
     if not keep_size:
         seg_nii.resample_from_to_(og_nii)
+    if fill_holes:
+        seg_nii.fill_holes_()
     if out_file is not None and (not Path(out_file).exists() or override):
         seg_nii.save(out_file)
     del nnunet

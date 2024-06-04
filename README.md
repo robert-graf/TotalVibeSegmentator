@@ -132,3 +132,12 @@ python run_semantic_spine_segmentation.py --img [IMAGE-PATH] --out_path [OUTPATH
 |70|vertebra_posterior_elements|
 |71|spinal_channel|
 |72|bone_other|
+
+## Versions
+
+You can select older (or new if your code is not updated with `git pull`) versions with `--dataset_id [ID]`
+
+|ID | NAME|
+| -------- | --------|
+|85|preprint|
+|86|repaired stomach|
