@@ -60,7 +60,7 @@ def run_total_seg(
         return out_path
     selected_gpu = gpu
     if gpu is None:
-        gpu = "auto"
+        gpu = "auto"  # type: ignore
     logger.print("run", f"{dataset_id=}, {gpu=}", Log_Type.STAGE)
     try:
         ds_info = get_ds_info(dataset_id)

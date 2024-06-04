@@ -49,11 +49,16 @@ conda activate TotalVibeSegmentator
 # Total Segmentation
 python run_TotalVibeSegmentator.py --img [IMAGE-PATH] --out_path [OUTPATH] --roi_path [roi_out_path (optional)]
 
+# Total Segmentation with postprocessing and combining of masks
+python run_TotalVibeSegmentator_multi.py --img_inphase [IMAGE-PATH] --img_water [IMAGE-PATH] --img_outphase [IMAGE-PATH]  --out_path [OUTPATH] --roi_path [roi_out_path (optional)]
+
 # Spine Instance
 python run_instance_spine_segmentation.py --img [IMAGE-PATH] --out_path [OUTPATH]
 
 # Spine Semantic
 python run_semantic_spine_segmentation.py --img [IMAGE-PATH] --out_path [OUTPATH]
+
+
 ```
 ## Label overview
 ![Slices](/imgs/slices_github.jpg)
