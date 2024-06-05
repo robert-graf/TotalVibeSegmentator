@@ -217,20 +217,7 @@ def validate_seg(nii: NII | Path, path_seg: Path, save_prob=False, aggressivenes
     logger.close()
 
 
-def combine(
-    inter_file: dict[str, tuple[Path, Path]],
-    out_path: Path,
-    roi: NII,
-    override=False,
-    verbose=True,
-    female=False,
-    # check_files=False,
-    # verbose=True,
-    # out_name="076",
-    # female=False,
-    # save_split=True,
-    # minimal=False,
-):
+def combine(inter_file: dict[str, tuple[Path, Path]], out_path: Path, roi: NII, override=False, verbose=True, female=False):
     if out_path.exists() and not override:
         return
 

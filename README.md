@@ -129,7 +129,7 @@ python run_semantic_spine_segmentation.py --img [IMAGE-PATH] --out_path [OUTPATH
 |62|iliopsoas_right|
 |63|sternum|
 |64|costal_cartilages|
-|65|outer_skin|
+|65|subcutaneous_fat|
 |66|muscle|
 |67|inner_fat|
 |68|IVD|
