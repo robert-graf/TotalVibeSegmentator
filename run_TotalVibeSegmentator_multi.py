@@ -80,8 +80,8 @@ labels = {
     61: {"typ": "muscle", "name": "iliopsoas_left", "min": 1, "max": 1, "autofix": 600},
     62: {"typ": "muscle", "name": "iliopsoas_right", "min": 1, "max": 1, "autofix": 600},
     63: {"typ": "bone", "name": "sternum", "min": 1, "max": 1, "autofix": 15},
-    64: {"typ": "prone_to_over_seg", "name": "costal_cartilages", "min": 10, "max": 30, "autofix": 2},
-    65: {"typ": "rest", "name": "outer_skin", "min": 1, "max": 1000, "autofix": 2},
+    64: {"typ": "prone_to_over_seg", "name": "costal_cartilages", "min": 4, "max": 30, "autofix": 2},
+    65: {"typ": "rest", "name": "subcutaneous_fat", "min": 1, "max": 1000, "autofix": 2},
     66: {"typ": "rest", "name": "muscle", "min": 1, "max": 1000, "autofix": 2},
     67: {"typ": "rest", "name": "inner_fat", "min": 1, "max": 1000, "autofix": 2},
     68: {"typ": "bone", "name": "IVD", "min": 1, "max": 25, "autofix": 2},
@@ -118,6 +118,7 @@ def run_total_seg(
     known_idx=idx_models,
     roi_path: str | Path | None = None,
     keep_size=False,
+    fill_holes=False,
     **kargs,
 ):
     if dataset_id is None:
@@ -170,7 +171,7 @@ def run_total_seg(
                 keep_size=keep_size,
             )
             validate_seg(to_nii_seg(out_) if a is None else to_nii_seg(a[0]), out_, aggressiveness=5)
-        combine(inter_file, out_path=Path(out_path), roi=roi_seg, override=override)
+        combine(inter_file, out_path=Path(out_path), roi=roi_seg, override=override, fill_holes=fill_holes)
     except Exception:
         logger.print_error()
 
@@ -217,7 +218,9 @@ def validate_seg(nii: NII | Path, path_seg: Path, save_prob=False, aggressivenes
     logger.close()
 
 
-def combine(inter_file: dict[str, tuple[Path, Path]], out_path: Path, roi: NII, override=False, verbose=True, female=False):
+def combine(
+    inter_file: dict[str, tuple[Path, Path]], out_path: Path, roi: NII, override=False, verbose=True, female=False, fill_holes=False
+):
     if out_path.exists() and not override:
         return
 
