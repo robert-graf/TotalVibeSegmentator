@@ -155,14 +155,19 @@ def run_total_seg(
     try:
         ds_info = get_ds_info(dataset_id)
         orientation = ds_info["orientation"]
-        roi_seg = run_roi(
-            next(iter(inter_file.values()))[0], roi_path, gpu=selected_gpu, dataset_id=ds_info.get("roi", 278), override=override
-        )
-        roi_seg = to_nii_seg(roi_seg)
+        if "roi" in ds_info:
+            roi_seg = run_roi(
+                next(iter(inter_file.values()))[0], roi_path, gpu=selected_gpu, dataset_id=ds_info.get("roi", 278), override=override
+            )
+            roi_seg = [to_nii_seg(roi_seg)]
+
+        else:
+            roi_seg = []
+
         for img_, out_ in inter_file.values():
             a = run_inference_on_file(
                 dataset_id,
-                [to_nii(img_), roi_seg],
+                [to_nii(img_), *roi_seg],
                 override=override,
                 out_file=out_,
                 gpu=selected_gpu,
@@ -171,7 +176,7 @@ def run_total_seg(
                 keep_size=keep_size,
             )
             validate_seg(to_nii_seg(out_) if a is None else to_nii_seg(a[0]), out_, aggressiveness=5)
-        combine(inter_file, out_path=Path(out_path), roi=roi_seg, override=override, fill_holes=fill_holes)
+        combine(inter_file, out_path=Path(out_path), override=override, fill_holes=fill_holes)
     except Exception:
         logger.print_error()
 
@@ -218,9 +223,7 @@ def validate_seg(nii: NII | Path, path_seg: Path, save_prob=False, aggressivenes
     logger.close()
 
 
-def combine(
-    inter_file: dict[str, tuple[Path, Path]], out_path: Path, roi: NII, override=False, verbose=True, female=False, fill_holes=False
-):
+def combine(inter_file: dict[str, tuple[Path, Path]], out_path: Path, override=False, verbose=True, female=False, fill_holes=False):
     if out_path.exists() and not override:
         return
 
@@ -259,8 +262,6 @@ def combine(
     first_key = next(iter(inter_file.keys()))
     segs = {first_key: to_nii_seg(inter_file[first_key][1])}
     #### MASKING
-    if roi.shape != segs[first_key].shape:
-        roi.resample_from_to_(segs[first_key])
     # mask = roi.clamp(0, 1).dilate_msk(3)
     for name, (_, p2) in inter_file.items():
         if name == first_key:

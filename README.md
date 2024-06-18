@@ -61,7 +61,7 @@ python run_semantic_spine_segmentation.py --img [IMAGE-PATH] --out_path [OUTPATH
 
 ```
 ## Label overview
-![Slices](/imgs/slices_github.jpg)
+
 
 |ID | NAME|
 | -------- | --------|
@@ -146,6 +146,9 @@ You can select older (or new if your code is not updated with `git pull`) versio
 | -------- | --------|
 |85|preprint|
 |86|repaired stomach|
+|87|Better hyperparameter|
+|278|Splits the body in 11 regions|
+
 
 ## How to Cite
 The related paper is available as preprint: [arXiv:2406.00125](https://arxiv.org/abs/2406.00125)
@@ -157,3 +160,9 @@ The related paper is available as preprint: [arXiv:2406.00125](https://arxiv.org
   year={2024}
 }
 ```
+
+## Other networks
+
+`run_TotalVibeSegmentator.py [...] --dataset_id 278` 
+
+![Slices](/imgs/roi.jpg)

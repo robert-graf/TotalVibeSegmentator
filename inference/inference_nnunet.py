@@ -28,6 +28,13 @@ def get_ds_info(idx) -> dict:
     return ds_info
 
 
+def squash_so_it_fits_in_float16(x: NII):
+    m = x.max()
+    if m > 10000:
+        x /= m / 1000  # new max will be 1000
+    return x
+
+
 def run_inference_on_file(
     idx,
     input_nii: list[NII],
@@ -39,6 +46,7 @@ def run_inference_on_file(
     fill_holes=False,
     logits=False,
     mapping=None,
+    crop=False,
 ) -> tuple[Image_Reference, np.ndarray | None]:
     if out_file is not None and Path(out_file).exists() and not override:
         return out_file, None
@@ -74,6 +82,10 @@ def run_inference_on_file(
 
     if zoom is not None:
         input_nii = [i.rescale_(zoom) for i in input_nii]
+    input_nii = [squash_so_it_fits_in_float16(i) for i in input_nii]
+    if crop:
+        crop = input_nii[0].compute_crop(minimum=20)
+        input_nii = [i.apply_crop(crop) for i in input_nii]
     seg_nii, uncertainty_nii, softmax_logits = run_inference(input_nii, nnunet, logits=logits)
     if mapping is not None:
         seg_nii.map_labels_(mapping)

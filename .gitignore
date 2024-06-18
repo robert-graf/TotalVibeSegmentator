@@ -160,3 +160,5 @@ cython_debug/
 #.idea/
 Dataset*/
 *.nii.gz
+tmp.txt
+dataset_id

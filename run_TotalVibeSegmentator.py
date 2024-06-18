@@ -13,7 +13,7 @@ from inference.inference_nnunet import p as model_path
 from inference.inference_nnunet import run_inference_on_file
 
 logger = Print_Logger()
-idx_models = [86, 85]  # first found is used
+idx_models = [88, 87, 86, 85]  # first found is used
 
 
 def run_roi(nii: str | Path, out_file: Path | str | None, gpu=None, dataset_id=278, keep_size=False, override=False):
@@ -41,6 +41,7 @@ def run_total_seg(
     roi_path: str | Path | None = None,
     keep_size=False,
     fill_holes=False,
+    crop=False,
     **kargs,
 ):
     if dataset_id is None:
@@ -55,6 +56,8 @@ def run_total_seg(
         else:
             logger.print(f"Could not find model. Download the model an put it into {model_path.absolute()}", Log_Type.FAIL)
             return
+    else:
+        download_weights(dataset_id)
     if out_path.exists() and not override:
         logger.print(out_path, "already exists. SKIP!", Log_Type.OK)
         return out_path
@@ -65,11 +68,15 @@ def run_total_seg(
     try:
         ds_info = get_ds_info(dataset_id)
         orientation = ds_info["orientation"]
-        roi_seg = run_roi(img, roi_path, gpu=selected_gpu, dataset_id=ds_info.get("roi", 278), override=override)
-        roi_seg = to_nii(roi_seg, True)
+        if "roi" in ds_info:
+            roi_seg = run_roi(img, roi_path, gpu=selected_gpu, dataset_id=ds_info.get("roi", 278), override=override)
+            roi_seg = to_nii(roi_seg, True)
+            in_niis = [to_nii(img), roi_seg]
+        else:
+            in_niis = [to_nii(img)]
         return run_inference_on_file(
             dataset_id,
-            [to_nii(img), roi_seg],
+            in_niis,
             override=override,
             out_file=out_path,
             gpu=selected_gpu,
@@ -77,6 +84,7 @@ def run_total_seg(
             logits=logits,
             keep_size=keep_size,
             fill_holes=fill_holes,
+            crop=crop,
         )
     except Exception:
         logger.print_error()
@@ -92,6 +100,7 @@ class Arguments(Class_to_ArgParse):
     dataset_id: int | None = None
     keep_size: bool = False
     fill_holes: bool = False
+    crop: bool = False
 
 
 if __name__ == "__main__":
