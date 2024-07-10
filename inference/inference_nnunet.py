@@ -47,6 +47,7 @@ def run_inference_on_file(
     logits=False,
     mapping=None,
     crop=False,
+    max_folds=None,
 ) -> tuple[Image_Reference, np.ndarray | None]:
     if out_file is not None and Path(out_file).exists() and not override:
         return out_file, None
@@ -57,6 +58,8 @@ def run_inference_on_file(
 
     nnunet_path = next(next(iter(p.glob(f"*{idx}*"))).glob("*__nnUNetPlans*"))
     folds = [int(f.name.split("fold_")[-1]) for f in nnunet_path.glob("fold*")]
+    if max_folds is not None:
+        folds = folds[:max_folds]
 
     # if idx in _unets:
     #    nnunet = _unets[idx]

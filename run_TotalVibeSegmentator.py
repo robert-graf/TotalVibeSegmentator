@@ -13,7 +13,7 @@ from inference.inference_nnunet import p as model_path
 from inference.inference_nnunet import run_inference_on_file
 
 logger = Print_Logger()
-idx_models = [88, 87, 86, 85]  # first found is used
+idx_models = [80, 87, 86, 85]  # first found is used; Recommended is the earlier ones.
 
 
 def run_roi(nii: str | Path, out_file: Path | str | None, gpu=None, dataset_id=278, keep_size=False, override=False):
@@ -42,6 +42,7 @@ def run_total_seg(
     keep_size=False,
     fill_holes=False,
     crop=False,
+    max_folds: int | None = None,
     **kargs,
 ):
     if dataset_id is None:
@@ -74,6 +75,13 @@ def run_total_seg(
             in_niis = [to_nii(img), roi_seg]
         else:
             in_niis = [to_nii(img)]
+        if (in_niis[0].affine == np.eye(4)).all():
+            from warnings import warn
+
+            warn(
+                "Your affine matrix is the identity. Make sure that the spacing and orientation is correct. For NAKO it should be 1.40625 mm for R/L and A/P and 3 mm S/I. For UKBB R/L and A/P should be around 2.2 mm",
+                stacklevel=3,
+            )
         return run_inference_on_file(
             dataset_id,
             in_niis,
@@ -85,6 +93,7 @@ def run_total_seg(
             keep_size=keep_size,
             fill_holes=fill_holes,
             crop=crop,
+            max_folds=max_folds,
         )
     except Exception:
         logger.print_error()
@@ -101,6 +110,7 @@ class Arguments(Class_to_ArgParse):
     keep_size: bool = False
     fill_holes: bool = False
     crop: bool = False
+    max_folds: int | None = None
 
 
 if __name__ == "__main__":
@@ -110,5 +120,12 @@ if __name__ == "__main__":
     arg = Arguments.get_opt()
     if not arg.img.exists():
         raise FileNotFoundError(arg.img)
+    import numpy as np
+    from TPTBox import NII
+
+    # nii = NII.load(arg.img, False)
+    # arr = nii.nii.get_fdata()
+    # nii.set_array_(arr)
+    # arg.img = nii  # type: ignore
     run_total_seg(**arg.__dict__)
     print(f"Took {time.time()-t} seconds.")

@@ -103,6 +103,7 @@ class nnUNetPredictor:
             dataset_json,
             configuration_manager,
             num_input_channels,
+            num_output_channels=len(dataset_json["labels"]),
             deep_supervision=False,
         )
         self.plans_manager = plans_manager

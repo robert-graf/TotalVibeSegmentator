@@ -2,7 +2,7 @@
 # Isensee, F., Jaeger, P. F., Kohl, S. A., Petersen, J., & Maier-Hein, K. H. (2021). nnU-Net: a self-configuring
 # method for deep learning-based biomedical image segmentation. Nature methods, 18(2), 203-211.
 from dynamic_network_architectures.architectures.unet import PlainConvUNet, ResidualEncoderUNet
-from dynamic_network_architectures.building_blocks.helper import get_matching_instancenorm, convert_dim_to_conv_op
+from dynamic_network_architectures.building_blocks.helper import convert_dim_to_conv_op, get_matching_instancenorm
 from dynamic_network_architectures.initialization.weight_init import init_last_bn_before_add_to_0
 from nnunetv2.utilities.network_initialization import InitWeights_He
 from nnunetv2.utilities.plans_handling.plans_handler import ConfigurationManager, PlansManager
@@ -14,6 +14,7 @@ def get_network_from_plans(
     dataset_json: dict,
     configuration_manager: ConfigurationManager,
     num_input_channels: int,
+    num_output_channels: int = None,
     deep_supervision: bool = True,
 ):
     """
@@ -22,6 +23,13 @@ def get_network_from_plans(
     num_input_channels can differ depending on whether we do cascade. Its best to make this info available in the
     trainer rather than inferring it again from the plans here.
     """
+    if "architecture" in configuration_manager.configuration:
+        from nnunetv2.utilities.get_network_from_plans import get_network_from_plans as plans
+
+        class_name = configuration_manager.configuration["architecture"]["network_class_name"]
+        kwargs = configuration_manager.configuration["architecture"]["arch_kwargs"]
+        _kw_requires_import = configuration_manager.configuration["architecture"]["_kw_requires_import"]
+        return plans(class_name, kwargs, _kw_requires_import, num_input_channels, num_output_channels, deep_supervision=deep_supervision)
     num_stages = len(configuration_manager.conv_kernel_sizes)
 
     dim = len(configuration_manager.conv_kernel_sizes[0])
@@ -71,8 +79,7 @@ def get_network_from_plans(
         input_channels=num_input_channels,
         n_stages=num_stages,
         features_per_stage=[
-            min(configuration_manager.UNet_base_num_features * 2**i, configuration_manager.unet_max_num_features)
-            for i in range(num_stages)
+            min(configuration_manager.UNet_base_num_features * 2**i, configuration_manager.unet_max_num_features) for i in range(num_stages)
         ],
         conv_op=conv_op,
         kernel_sizes=configuration_manager.conv_kernel_sizes,
@@ -80,7 +87,7 @@ def get_network_from_plans(
         num_classes=label_manager.num_segmentation_heads,
         deep_supervision=deep_supervision,
         **conv_or_blocks_per_stage,
-        **kwargs[segmentation_network_class_name]
+        **kwargs[segmentation_network_class_name],
     )
     model.apply(InitWeights_He(1e-2))
     if network_class == ResidualEncoderUNet:
