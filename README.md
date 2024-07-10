@@ -38,7 +38,7 @@ cd TotalVibeSegmentator
 
 ## Download
 
-Download the nnUNet weights automatically or if this is not working use this [Mirror](https://syncandshare.lrz.de/getlink/fi85nm6N8cqwHz342Rsqt9/nnUNet_results) and put them in `[Path to this project]/nnUNet/nnUNet_results/`. For the TotalVibeSegmentator, you need the ROI model (278) and the newest TotalVibeSegmentator model.
+Download the nnUNet weights automatically. They are put in `[Path to this project]/nnUNet/nnUNet_results/`. 
 
 You must navigate (with cd in your terminal) to the folder containing `run_TotalVibeSegmentator.py`
 ## Run
