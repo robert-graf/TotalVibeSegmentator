@@ -15,6 +15,7 @@
 3. Navigate to the folder where you want to download the script using `cd [FOLDER PATH]`.
 
 ```bash
+# Run this commands by coping in to the Terminal
 # Recommended: make a virtual Python environment (example shows Anaconda)
 conda create -n "TotalVibeSegmentator" python=3.11.0  
 conda activate TotalVibeSegmentator
@@ -40,10 +41,9 @@ cd TotalVibeSegmentator
 
 Download the nnUNet weights automatically. They are put in `[Path to this project]/nnUNet/nnUNet_results/`. 
 
-You must navigate (with cd in your terminal) to the folder containing `run_TotalVibeSegmentator.py`
 ## Run
 ```bash
-# Download the nnUNet weights and put them in [Path to this project]/nnUNet/nnUNet_results/
+# Run this commands in a Terminal where you navigate to the folder where `run_TotalVibeSegmentator.py` is
 conda activate TotalVibeSegmentator
 
 # Total Segmentation
