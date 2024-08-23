@@ -105,7 +105,7 @@ class Arguments(Class_to_ArgParse):
     out_path: Path = Path("seg.nii.gz")
     roi_path: Path | None = None
     override: bool = False
-    gpu = None
+    gpu: int | None = None
     dataset_id: int | None = None
     keep_size: bool = False
     fill_holes: bool = False

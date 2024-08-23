@@ -70,7 +70,7 @@ class Arguments(Class_to_ArgParse):
     img: Path = Path("img.nii.gz")
     out_path: Path = Path("seg.nii.gz")
     override: bool = False
-    gpu = None
+    gpu: int | None = None
     dataset_id: int | None = None
 
 
