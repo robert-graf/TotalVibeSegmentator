@@ -1,4 +1,4 @@
-# TotalVibeSegmentator: Full Torso Segmentation for the NAKO and UK Biobank in Volumetric Interpolated Breath-hold Examination Body Images 
+# TotalVibeSegmentator:  Full Body MRI Segmentation for the NAKO and UK Biobank 
 
 ![3D Render](/imgs/3d_render_github.png)
 ## Installation Guide
@@ -155,7 +155,7 @@ You can select older (or new if your code is not updated with `git pull`) versio
 The related paper is available as preprint: [arXiv:2406.00125](https://arxiv.org/abs/2406.00125)
 ```
 @article{graf2024totalvibesegmentator,
-  title={TotalVibeSegmentator: Full Torso Segmentation for the NAKO and UK Biobank in Volumetric Interpolated Breath-hold Examination Body Images},
+  title={TotalVibeSegmentator:  Full Body MRI Segmentation for the NAKO and UK Biobank },
   author={Graf, Robert and Platzek, Paul-S{\"o}ren and Riedel, Evamaria Olga and Ramsch{\"u}tz, Constanze and Starck, Sophie and M{\"o}ller, Hendrik Kristian and Atad, Matan and V{\"o}lzke, Henry and B{\"u}low, Robin and Schmidt, Carsten Oliver and others},
   journal={arXiv preprint arXiv:2406.00125},
   year={2024}
