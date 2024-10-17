@@ -60,6 +60,31 @@ python run_semantic_spine_segmentation.py --img [IMAGE-PATH] --out_path [OUTPATH
 
 
 ```
+
+### Running an Example
+```bash
+conda activate TotalVibeSegmentator
+#cd to the folder where you downloaded the GitHub files (the folder where the run_TotalVibeSegmentator.py is located)
+```
+Let's run some examples that were never seen during training. You can download all four examples from [here](https://github.com/robert-graf/TotalVibeSegmentator/releases/download/example/example_mri.zip) 
+
+(Source: [link](https://zenodo.org/records/11367005) Number s0284, s0286, s0287, s0288)
+
+Unzip the file. For this example, we copied all files to a folder called 'example' where the run_TotalVibeSegmentator.py is located.
+```bash
+
+python run_TotalVibeSegmentator.py --img example/mri1.nii.gz --out_path  example/seg1.nii.gz
+
+python run_TotalVibeSegmentator.py --img example/mri2.nii.gz --out_path  example/seg2.nii.gz
+
+python run_TotalVibeSegmentator.py --img example/mri3.nii.gz --out_path  example/seg3.nii.gz
+
+python run_TotalVibeSegmentator.py --img example/mri4.nii.gz --out_path  example/seg4.nii.gz
+```
+The segmentation is stored in "example/segX.nii.gz." You can view the results with [ITKSnap](http://www.itksnap.org/pmwiki/pmwiki.php) by first drag-and-drop the mriX.nii.gz and then drag-and-drop the segX.nii.gz (with X is a number from before) and click on "Open as Segmentation"
+
+To run this script on your data update the paths.
+
 ## Label overview
 
 
