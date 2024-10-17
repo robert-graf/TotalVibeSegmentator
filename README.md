@@ -7,6 +7,7 @@
 - Nvidia-GPU with 4 GB of RAM or more.
 - A newer Mac with M2/M3 could work, but we could not test this.
 - Python 3.10 or higher.
+- Tested on Ubuntu and Windows.
 
 ### Installation Guide
 
@@ -17,7 +18,7 @@
 ```bash
 # Run this commands by coping in to the Terminal
 # Recommended: make a virtual Python environment (example shows Anaconda)
-conda create -n "TotalVibeSegmentator" python=3.11.0  
+conda create -n "TotalVibeSegmentator" python=3.11.0
 conda activate TotalVibeSegmentator
 
 # Install PyTorch that works with your GPU (follow instructions at https://pytorch.org/get-started/locally/)
@@ -26,8 +27,9 @@ pip install torch torchvision torchaudio
 # Install required Python packages
 pip install TPTBox ruamel.yaml configargparse
 pip install nnunetv2 
+# We recommend the newest versions. Tested versions: TPTBox==1.6, ruamel.yaml==0.18.6, configargparse==1.7, nnunetv2==2.4.2
 
-# If nnunetv2 does not work, try version 2.4.2
+# If e. g. nnunetv2 does not work, try version 2.4.2
 # Uninstall the current version and reinstall with the specified version
 #pip uninstall nnunetv2
 #pip install nnunetv2==2.4.2
@@ -83,7 +85,7 @@ python run_TotalVibeSegmentator.py --img example/mri4.nii.gz --out_path  example
 ```
 The segmentation is stored in "example/segX.nii.gz." You can view the results with [ITKSnap](http://www.itksnap.org/pmwiki/pmwiki.php) by first drag-and-drop the mriX.nii.gz and then drag-and-drop the segX.nii.gz (with X is a number from before) and click on "Open as Segmentation"
 
-To run this script on your data update the paths.
+To run this script on your data, update the paths.
 
 ## Label overview
 
