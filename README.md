@@ -38,7 +38,7 @@ pip install nnunetv2
 git clone https://github.com/robert-graf/TotalVibeSegmentator.git
 cd TotalVibeSegmentator
 ```
-
+It should take less than 30 minutes to install, excluding installing conda/python. The longest time takes to install pytroch. 
 ## Download
 
 Download the nnUNet weights automatically. They are put in `[Path to this project]/nnUNet/nnUNet_results/`. 
