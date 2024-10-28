@@ -11,6 +11,7 @@ from tqdm import tqdm
 
 sys.path.append(str(Path(__file__).parent.parent))
 
+from inference.auto_download import download_weights
 from parallel.get_gpu import check_gpu_memory
 from run_TotalVibeSegmentator import run_total_seg
 
@@ -165,6 +166,7 @@ def run_parallel_water_fat_swap_detection(subs: list[Subject], override=False, g
         max_workers (int): Maximum number of threads to use.
         threshold (int): GPU memory usage threshold to pause submission.
     """
+    download_weights(282)
     futures = []
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         for sub in subs:
@@ -325,4 +327,4 @@ if __name__ == "__main__":
 
         affected_structures
         This field lists anatomical structures from the Total VIBE segmentation map that have been affected by water-fat inversion.
-        """
+    """
