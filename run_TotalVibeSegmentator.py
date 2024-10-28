@@ -2,6 +2,7 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
+import numpy as np
 from TPTBox import Log_Type, Print_Logger, to_nii
 
 from TypeSaveArgParse import Class_to_ArgParse
@@ -31,7 +32,7 @@ def run_roi(nii: str | Path, out_file: Path | str | None, gpu=None, dataset_id=2
 
 
 def run_total_seg(
-    img: Path | str,
+    img: Path | str | list[Path | str],
     out_path: Path,
     override=False,
     dataset_id=None,
@@ -73,6 +74,8 @@ def run_total_seg(
             roi_seg = run_roi(img, roi_path, gpu=selected_gpu, dataset_id=ds_info.get("roi", 278), override=override)
             roi_seg = to_nii(roi_seg, True)
             in_niis = [to_nii(img), roi_seg]
+        elif isinstance(img, list):
+            in_niis = [to_nii(i) for i in img]
         else:
             in_niis = [to_nii(img)]
         if (in_niis[0].affine == np.eye(4)).all():

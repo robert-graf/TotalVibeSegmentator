@@ -6,6 +6,15 @@ from TPTBox import Log_Type, No_Logger
 logger = No_Logger()
 
 
+def check_gpu_memory(gpu_id, threshold=50):
+    """Check the GPU memory utilization and return True if usage exceeds threshold."""
+    gpus = GPUtil.getGPUs()
+    for gpu in gpus:
+        if gpu.id == gpu_id:
+            return gpu.memoryUtil * 100 > threshold
+    return False
+
+
 def get_gpu(verbose: bool = False, max_load: float = 0.3, max_memory: float = 0.4):
     GPUtil.showUtilization() if verbose else None
     device_ids = GPUtil.getAvailable(
