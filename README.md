@@ -34,9 +34,6 @@ pip install nnunetv2
 #pip uninstall nnunetv2
 #pip install nnunetv2==2.4.2
 
-# Hotfix Upstream is deliting functions... -- There is a function missing in nnunetv2.
-pip install blosc2 acvl_utils==0.2
-
 # Download the scripts (they will be downloaded to your current folder)
 git clone https://github.com/robert-graf/TotalVibeSegmentator.git
 cd TotalVibeSegmentator
