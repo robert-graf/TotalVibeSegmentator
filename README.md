@@ -1,4 +1,4 @@
-# TotalVibeSegmentator: Full Torso Segmentation for the NAKO and UK Biobank in Volumetric Interpolated Breath-hold Examination Body Images 
+# TotalVibeSegmentator:  Full Body MRI Segmentation for the NAKO and UK Biobank 
 
 ![3D Render](/imgs/3d_render_github.png)
 ## Installation Guide
@@ -7,6 +7,7 @@
 - Nvidia-GPU with 4 GB of RAM or more.
 - A newer Mac with M2/M3 could work, but we could not test this.
 - Python 3.10 or higher.
+- Tested on Ubuntu and Windows.
 
 ### Installation Guide
 
@@ -17,7 +18,7 @@
 ```bash
 # Run this commands by coping in to the Terminal
 # Recommended: make a virtual Python environment (example shows Anaconda)
-conda create -n "TotalVibeSegmentator" python=3.11.0  
+conda create -n "TotalVibeSegmentator" python=3.11.0
 conda activate TotalVibeSegmentator
 
 # Install PyTorch that works with your GPU (follow instructions at https://pytorch.org/get-started/locally/)
@@ -26,8 +27,9 @@ pip install torch torchvision torchaudio
 # Install required Python packages
 pip install TPTBox ruamel.yaml configargparse
 pip install nnunetv2 
+# We recommend the newest versions. Tested versions: TPTBox==1.6, ruamel.yaml==0.18.6, configargparse==1.7, nnunetv2==2.4.2
 
-# If nnunetv2 does not work, try version 2.4.2
+# If e. g. nnunetv2 does not work, try version 2.4.2
 # Uninstall the current version and reinstall with the specified version
 #pip uninstall nnunetv2
 #pip install nnunetv2==2.4.2
@@ -36,7 +38,7 @@ pip install nnunetv2
 git clone https://github.com/robert-graf/TotalVibeSegmentator.git
 cd TotalVibeSegmentator
 ```
-
+It should take less than 30 minutes to install, excluding installing conda/python. The longest time takes to install pytroch. 
 ## Download
 
 Download the nnUNet weights automatically. They are put in `[Path to this project]/nnUNet/nnUNet_results/`. 
@@ -60,6 +62,31 @@ python run_semantic_spine_segmentation.py --img [IMAGE-PATH] --out_path [OUTPATH
 
 
 ```
+
+### Running an Example
+```bash
+conda activate TotalVibeSegmentator
+#cd to the folder where you downloaded the GitHub files (the folder where the run_TotalVibeSegmentator.py is located)
+```
+Let's run some examples that were never seen during training. You can download all four examples from [here](https://github.com/robert-graf/TotalVibeSegmentator/releases/download/example/example_mri.zip) 
+
+(Source: [link](https://zenodo.org/records/11367005) Number s0284, s0286, s0287, s0288)
+
+Unzip the file. For this example, we copied all files to a folder called 'example' where the run_TotalVibeSegmentator.py is located.
+```bash
+
+python run_TotalVibeSegmentator.py --img example/mri1.nii.gz --out_path  example/seg1.nii.gz
+
+python run_TotalVibeSegmentator.py --img example/mri2.nii.gz --out_path  example/seg2.nii.gz
+
+python run_TotalVibeSegmentator.py --img example/mri3.nii.gz --out_path  example/seg3.nii.gz
+
+python run_TotalVibeSegmentator.py --img example/mri4.nii.gz --out_path  example/seg4.nii.gz
+```
+The segmentation is stored in "example/segX.nii.gz." You can view the results with [ITKSnap](http://www.itksnap.org/pmwiki/pmwiki.php) by first drag-and-drop the mriX.nii.gz and then drag-and-drop the segX.nii.gz (with X is a number from before) and click on "Open as Segmentation"
+
+To run this script on your data, update the paths.
+
 ## Label overview
 
 
@@ -155,7 +182,7 @@ You can select older (or new if your code is not updated with `git pull`) versio
 The related paper is available as preprint: [arXiv:2406.00125](https://arxiv.org/abs/2406.00125)
 ```
 @article{graf2024totalvibesegmentator,
-  title={TotalVibeSegmentator: Full Torso Segmentation for the NAKO and UK Biobank in Volumetric Interpolated Breath-hold Examination Body Images},
+  title={TotalVibeSegmentator:  Full Body MRI Segmentation for the NAKO and UK Biobank },
   author={Graf, Robert and Platzek, Paul-S{\"o}ren and Riedel, Evamaria Olga and Ramsch{\"u}tz, Constanze and Starck, Sophie and M{\"o}ller, Hendrik Kristian and Atad, Matan and V{\"o}lzke, Henry and B{\"u}low, Robin and Schmidt, Carsten Oliver and others},
   journal={arXiv preprint arXiv:2406.00125},
   year={2024}
