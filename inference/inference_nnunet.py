@@ -42,6 +42,7 @@ def run_inference_on_file(
     orientation=None,
     override=False,
     gpu=None,
+    ddevice="cuda",
     keep_size=False,
     fill_holes=False,
     logits=False,
@@ -64,7 +65,9 @@ def run_inference_on_file(
     # if idx in _unets:
     #    nnunet = _unets[idx]
     # else:
-    nnunet = load_inf_model(nnunet_path, allow_non_final=True, use_folds=tuple(folds) if len(folds) != 5 else None, gpu=gpu)
+    nnunet = load_inf_model(
+        nnunet_path, allow_non_final=True, use_folds=tuple(folds) if len(folds) != 5 else None, gpu=gpu, ddevice=ddevice
+    )
     #    _unets[idx] = nnunet
     with open(Path(nnunet_path, "plans.json")) as f:
         plans_info = json.load(f)

@@ -4,10 +4,12 @@
 ## Installation Guide
 
 ### System Requirements
-- Nvidia-GPU with 4 GB of RAM or more.
-- A newer Mac with M2/M3 could work, but we could not test this.
 - Python 3.10 or higher.
 - Tested on Ubuntu and Windows.
+- One of the following:
+  - Nvidia-GPU with 4 GB of RAM or more.
+  - A mps device (like a newer Mac with M2/M3 , but we could not test this.) (--ddevice mps)
+  - A strong CPU (--ddevice cpu)
 
 ### Installation Guide
 
@@ -49,16 +51,16 @@ Download the nnUNet weights automatically. They are put in `[Path to this projec
 conda activate TotalVibeSegmentator
 
 # Total Segmentation
-python run_TotalVibeSegmentator.py --img [IMAGE-PATH] --out_path [OUTPATH] --roi_path [roi_out_path (optional)]
+python run_TotalVibeSegmentator.py --img [IMAGE-PATH] --out_path [OUTPATH] --ddevice [cpu|cuda|mpu (optional)]
 
 # Total Segmentation with postprocessing and combining of masks
-python run_TotalVibeSegmentator_multi.py --img_inphase [IMAGE-PATH] --img_water [IMAGE-PATH] --img_outphase [IMAGE-PATH]  --out_path [OUTPATH] --roi_path [roi_out_path (optional)]
+python run_TotalVibeSegmentator_multi.py --img_inphase [IMAGE-PATH] --img_water [IMAGE-PATH] --img_outphase [IMAGE-PATH]  --out_path [OUTPATH] --ddevice [cpu|cuda|mpu (optional)]
 
 # Spine Instance
-python run_instance_spine_segmentation.py --img [IMAGE-PATH] --out_path [OUTPATH]
+python run_instance_spine_segmentation.py --img [IMAGE-PATH] --out_path [OUTPATH] --ddevice [cpu|cuda|mpu (optional)]
 
 # Spine Semantic
-python run_semantic_spine_segmentation.py --img [IMAGE-PATH] --out_path [OUTPATH]
+python run_semantic_spine_segmentation.py --img [IMAGE-PATH] --out_path [OUTPATH] --ddevice [cpu|cuda|mpu (optional)]
 
 
 ```

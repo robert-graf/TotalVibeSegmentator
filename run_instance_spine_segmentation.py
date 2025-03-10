@@ -22,6 +22,7 @@ def run_seg(
     override=False,
     dataset_id=None,
     gpu=None,
+    ddevice: str = "cuda",
     logits=False,
     known_idx=instance_models,
     mapping=None,
@@ -47,7 +48,8 @@ def run_seg(
     selected_gpu = gpu
     if gpu is None:
         gpu = "auto"
-    logger.print("run", f"{dataset_id=}, {gpu=}", Log_Type.STAGE)
+    logger.print("run", f"{dataset_id=}, {ddevice=}, {gpu=}", Log_Type.STAGE)
+
     try:
         ds_info = get_ds_info(dataset_id)
         orientation = ds_info["orientation"]
@@ -57,6 +59,7 @@ def run_seg(
             override=override,
             out_file=out_path,
             gpu=selected_gpu,
+            ddevice=ddevice,
             orientation=orientation,
             logits=logits,
             mapping=mapping,
@@ -71,6 +74,7 @@ class Arguments(Class_to_ArgParse):
     out_path: Path = Path("seg.nii.gz")
     override: bool = False
     gpu: int | None = None
+    ddevice: str = "cuda"
     dataset_id: int | None = None
 
 
@@ -86,4 +90,4 @@ if __name__ == "__main__":
     except Exception:
         mapping = None
     run_seg(**arg.__dict__, mapping=mapping)
-    print(f"Took {time.time()-t} seconds.")
+    print(f"Took {time.time() - t} seconds.")
