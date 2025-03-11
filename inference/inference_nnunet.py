@@ -20,9 +20,12 @@ def get_ds_info(idx) -> dict:
     try:
         nnunet_path = next(next(iter(p.glob(f"*{idx}*"))).glob("*__nnUNetPlans*"))
     except StopIteration:
-        Print_Logger().print(f"Please add Dataset {idx} to {p}", Log_Type.FAIL)
-        p.mkdir(exist_ok=True, parents=True)
-        exit()
+        try:
+            nnunet_path = next(next(iter(p.glob(f"*{idx}*"))).glob("*__nnUNet*ResEnc*"))
+        except StopIteration:
+            Print_Logger().print(f"Please add Dataset {idx} to {p}", Log_Type.FAIL)
+            p.mkdir(exist_ok=True, parents=True)
+            exit()
     with open(Path(nnunet_path, "dataset.json")) as f:
         ds_info = json.load(f)
     return ds_info
@@ -56,8 +59,10 @@ def run_inference_on_file(
     from spineps_.utils.inference_api import load_inf_model, run_inference
 
     download_weights(idx)
-
-    nnunet_path = next(next(iter(p.glob(f"*{idx}*"))).glob("*__nnUNetPlans*"))
+    try:
+        nnunet_path = next(next(iter(p.glob(f"*{idx}*"))).glob("*__nnUNetPlans*"))
+    except StopIteration:
+        nnunet_path = next(next(iter(p.glob(f"*{idx}*"))).glob("*__nnUNet*ResEnc*"))
     folds = [int(f.name.split("fold_")[-1]) for f in nnunet_path.glob("fold*")]
     if max_folds is not None:
         folds = folds[:max_folds]

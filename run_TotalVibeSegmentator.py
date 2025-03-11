@@ -7,10 +7,9 @@ from TPTBox import Log_Type, Print_Logger, to_nii
 from TypeSaveArgParse import Class_to_ArgParse
 
 sys.path.append(str(Path(__file__).parent))
-from inference.auto_download import download_weights  # noqa: I001
-from inference.inference_nnunet import get_ds_info
+from inference.auto_download import download_weights
+from inference.inference_nnunet import get_ds_info, run_inference_on_file
 from inference.inference_nnunet import p as model_path
-from inference.inference_nnunet import run_inference_on_file
 
 logger = Print_Logger()
 idx_models = [80, 87, 86, 85]  # first found is used; Recommended is the earlier ones.
@@ -54,7 +53,11 @@ def run_total_seg(
                 dataset_id = idx
                 break
             except StopIteration:
-                pass
+                try:
+                    next(next(iter(model_path.glob(f"*{idx}*"))).glob("*__nnUNet*ResEnc*"))
+                    dataset_id = idx
+                except StopIteration:
+                    pass
         else:
             logger.print(f"Could not find model. Download the model an put it into {model_path.absolute()}", Log_Type.FAIL)
             return
