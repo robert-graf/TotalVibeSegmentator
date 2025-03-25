@@ -92,7 +92,7 @@ total_vibe_map = {
 
 
 @dataclass
-class IMG:
+class Swap_statistic:
     """Represents an image with counts for water, fat, and disagreements (inversions),
     and calculates related percentages.
     """
@@ -198,7 +198,8 @@ def run_evaluation(subs: list[Subject], excel_out_path: Path | str, segment=Fals
     imgs_list = []
     with ProcessPoolExecutor(max_workers) as executor:
         futures = {
-            executor.submit(check_single_file, sub.name, sub.water_swap_out_file, sub.fat_swap_out_file, sub.total_vibe) for sub in subs
+            executor.submit(make_swap_statisic_single, sub.name, sub.water_swap_out_file, sub.fat_swap_out_file, sub.total_vibe)
+            for sub in subs
         }
 
         for future in tqdm(as_completed(futures), total=len(futures), desc="Water shift measure"):
@@ -231,7 +232,7 @@ def run_evaluation(subs: list[Subject], excel_out_path: Path | str, segment=Fals
     print(df_inversion["percent"].describe([0.01, 0.02, 0.05, 0.25, 0.5, 0.75, 0.9, 0.95, 0.98, 0.99]))
 
 
-def check_single_file(subj_name: str, seg1_water: Path, seg2_fat: Path, total_vibe: Path | str | None):
+def make_swap_statistic_single(subj_name: str, seg1_water: Path, seg2_fat: Path, total_vibe: Path | str | None):
     """Identifies water-fat inversions in the segmentation, optionally using total VIBE segmentation.
 
     Args:
@@ -257,7 +258,7 @@ def check_single_file(subj_name: str, seg1_water: Path, seg2_fat: Path, total_vi
             total_vibe_nii.resample_from_to_(nii)
         total_vibe_nii[nii.extract_label(2).erode_msk(1, verbose=False) != 1] = 0
 
-    return IMG(
+    return Swap_statistic(
         sub=subj_name,
         count_water=nii.extract_label(1).sum(),
         count_fat=nii.extract_label(2).sum(),
