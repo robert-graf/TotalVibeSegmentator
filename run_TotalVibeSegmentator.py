@@ -7,16 +7,15 @@ from TPTBox import Log_Type, Print_Logger, to_nii
 from TypeSaveArgParse import Class_to_ArgParse
 
 sys.path.append(str(Path(__file__).parent))
-from inference.auto_download import download_weights  # noqa: I001
-from inference.inference_nnunet import get_ds_info
+from inference.auto_download import download_weights
+from inference.inference_nnunet import get_ds_info, run_inference_on_file
 from inference.inference_nnunet import p as model_path
-from inference.inference_nnunet import run_inference_on_file
 
 logger = Print_Logger()
 idx_models = [80, 87, 86, 85]  # first found is used; Recommended is the earlier ones.
 
 
-def run_roi(nii: str | Path, out_file: Path | str | None, gpu=None, dataset_id=278, keep_size=False, override=False):
+def run_roi(nii: str | Path, out_file: Path | str | None, gpu=None, ddevice="cuda", dataset_id=278, keep_size=False, override=False):
     try:
         download_weights(dataset_id)
         next(next(iter(model_path.glob(f"*{dataset_id}*"))).glob("*__nnUNetPlans*"))
@@ -25,7 +24,7 @@ def run_roi(nii: str | Path, out_file: Path | str | None, gpu=None, dataset_id=2
             f"Could not find roi-model. Download the model {dataset_id} an put it into {model_path.absolute()}"
         ) from None
     nii_seg, _ = run_inference_on_file(
-        dataset_id, [to_nii(nii, False)], gpu=gpu, out_file=out_file, keep_size=keep_size, override=override, logits=False
+        dataset_id, [to_nii(nii, False)], gpu=gpu, ddevice=ddevice, out_file=out_file, keep_size=keep_size, override=override, logits=False
     )
     return nii_seg
 
@@ -36,6 +35,7 @@ def run_total_seg(
     override=False,
     dataset_id=None,
     gpu: int | None = None,
+    ddevice: str = "cuda",
     logits=False,
     known_idx=idx_models,
     roi_path: str | Path | None = None,
@@ -53,7 +53,11 @@ def run_total_seg(
                 dataset_id = idx
                 break
             except StopIteration:
-                pass
+                try:
+                    next(next(iter(model_path.glob(f"*{idx}*"))).glob("*__nnUNet*ResEnc*"))
+                    dataset_id = idx
+                except StopIteration:
+                    pass
         else:
             logger.print(f"Could not find model. Download the model an put it into {model_path.absolute()}", Log_Type.FAIL)
             return
@@ -65,12 +69,12 @@ def run_total_seg(
     selected_gpu = gpu
     if gpu is None:
         gpu = "auto"  # type: ignore
-    logger.print("run", f"{dataset_id=}, {gpu=}", Log_Type.STAGE)
+    logger.print("run", f"{dataset_id=}, {ddevice=}, {gpu=}", Log_Type.STAGE)
     try:
         ds_info = get_ds_info(dataset_id)
         orientation = ds_info["orientation"]
         if "roi" in ds_info:
-            roi_seg = run_roi(img, roi_path, gpu=selected_gpu, dataset_id=ds_info.get("roi", 278), override=override)
+            roi_seg = run_roi(img, roi_path, gpu=selected_gpu, ddevice=ddevice, dataset_id=ds_info.get("roi", 278), override=override)
             roi_seg = to_nii(roi_seg, True)
             in_niis = [to_nii(img), roi_seg]
         else:
@@ -88,6 +92,7 @@ def run_total_seg(
             override=override,
             out_file=out_path,
             gpu=selected_gpu,
+            ddevice=ddevice,
             orientation=orientation,
             logits=logits,
             keep_size=keep_size,
@@ -106,6 +111,7 @@ class Arguments(Class_to_ArgParse):
     roi_path: Path | None = None
     override: bool = False
     gpu: int | None = None
+    ddevice: str = "cuda"
     dataset_id: int | None = None
     keep_size: bool = False
     fill_holes: bool = False
@@ -128,4 +134,4 @@ if __name__ == "__main__":
     # nii.set_array_(arr)
     # arg.img = nii  # type: ignore
     run_total_seg(**arg.__dict__)
-    print(f"Took {time.time()-t} seconds.")
+    print(f"Took {time.time() - t} seconds.")

@@ -64,9 +64,9 @@ def user_guard(func: Any) -> Any:
 
 
 @user_guard
-def _download_weights(idx=85) -> None:
+def _download_weights(idx=85, addendum="") -> None:
     weights_dir = get_weights_dir(idx)
-    weights_url = WEIGHTS_URL_ + f"{idx:03}.zip"
+    weights_url = WEIGHTS_URL_ + f"{idx:03}{addendum}.zip"
     try:
         # Retrieve file size
         with urllib.request.urlopen(str(weights_url)) as response:
@@ -91,6 +91,17 @@ def _download_weights(idx=85) -> None:
     with zipfile.ZipFile(zip_path, "r") as zip_ref:
         zip_ref.extractall(weights_dir)
     os.remove(zip_path)  # noqa: PTH107
+    addendum_download(idx)
+
+
+def addendum_download(idx):
+    weights_dir = get_weights_dir(idx)
+    next_zip = weights_dir / "other_downloads.json"
+    if next_zip.exists():
+        with open(next_zip) as f:
+            add = json.load(f)
+        [_download_weights(idx, addendum=a) for a in add]
+        next_zip.unlink()
 
 
 def download_weights(idx) -> Path:
@@ -99,4 +110,5 @@ def download_weights(idx) -> Path:
     # Check if weights are downloaded
     if not weights_dir.exists():
         _download_weights(idx)
+    addendum_download(idx)
     return weights_dir

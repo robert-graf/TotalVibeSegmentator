@@ -52,6 +52,7 @@ class nnUNetPredictor:
         self.use_mirroring = use_mirroring
         if device.type == "cuda":
             device = torch.device(type="cuda", index=cuda_id)  # set the desired GPU with CUDA_VISIBLE_DEVICES!
+        self.do_not_use_half_precision = device.type == "cpu"  # float16 not supported by cpu
         if device.type != "cuda" and perform_everything_on_gpu:
             print("perform_everything_on_gpu=True is only supported for cuda devices! Setting this to False")
             perform_everything_on_gpu = False
@@ -82,8 +83,7 @@ class nnUNetPredictor:
         for i, f in enumerate(use_folds):
             f = int(f) if f != "all" else f
             checkpoint = torch.load(
-                join(model_training_output_dir, f"fold_{f}", checkpoint_name),
-                map_location=torch.device("cpu"),
+                join(model_training_output_dir, f"fold_{f}", checkpoint_name), map_location=torch.device("cpu"), weights_only=False
             )
             if i == 0:
                 trainer_name = checkpoint["trainer_name"]
@@ -98,12 +98,15 @@ class nnUNetPredictor:
         # restore network
         num_input_channels = determine_num_input_channels(plans_manager, configuration_manager, dataset_json)
         # num_input_channels = 1
+        num_output_channels = len(dataset_json["labels"])
+        if "ignore" in dataset_json["labels"]:
+            num_output_channels -= 1
         network = get_network_from_plans(
             plans_manager,
             dataset_json,
             configuration_manager,
             num_input_channels,
-            num_output_channels=len(dataset_json["labels"]),
+            num_output_channels=num_output_channels,
             deep_supervision=False,
         )
         self.plans_manager = plans_manager
@@ -344,6 +347,8 @@ class nnUNetPredictor:
         return slicers
 
     def _internal_maybe_mirror_and_predict(self, x: torch.Tensor, network) -> torch.Tensor:
+        if self.do_not_use_half_precision:
+            x = x.float()
         # USED
         mirror_axes = self.allowed_mirroring_axes if self.use_mirroring else None
         prediction = network(x)

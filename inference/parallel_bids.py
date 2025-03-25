@@ -174,4 +174,4 @@ if __name__ == "__main__":
     if not arg.dataset.exists():
         raise FileNotFoundError(arg.dataset)
     main(arg)
-    print(f"Took {time.time()-t} seconds.")
+    print(f"Took {time.time() - t} seconds.")
