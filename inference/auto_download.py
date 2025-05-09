@@ -91,7 +91,6 @@ def _download_weights(idx=85, addendum="") -> None:
     with zipfile.ZipFile(zip_path, "r") as zip_ref:
         zip_ref.extractall(weights_dir)
     os.remove(zip_path)  # noqa: PTH107
-    addendum_download(idx)
 
 
 def addendum_download(idx):
