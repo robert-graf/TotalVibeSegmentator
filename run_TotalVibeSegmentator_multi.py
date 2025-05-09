@@ -15,7 +15,7 @@ from inference.inference_nnunet import run_inference_on_file
 from run_TotalVibeSegmentator import run_roi
 
 logger = Print_Logger()
-idx_models = [86, 85]  # first found is used
+idx_models = [99, 86, 85]  # first found is used
 
 labels = {
     1: {"typ": "organ", "name": "spleen", "min": 1, "max": 1, "autofix": 100},
@@ -174,7 +174,7 @@ def validate_seg(nii: NII | Path, path_seg: Path, save_prob=False, aggressivenes
     nii = to_nii_seg(nii)
     path = path_seg.parent
     logger = Print_Logger()
-    arrs, dicts = nii.get_segmentation_connected_components(nii.unique())
+    arrs, dicts = nii.get_connected_components(nii.unique())
     for idx, n_cc in dicts.items():
         problem = False
         target = labels[idx]

@@ -12,7 +12,7 @@ from inference.inference_nnunet import get_ds_info, run_inference_on_file
 from inference.inference_nnunet import p as model_path
 
 logger = Print_Logger()
-idx_models = [80, 87, 86, 85]  # first found is used; Recommended is the earlier ones.
+idx_models = [99, 80, 87, 86, 85]  # first found is used; Recommended is the earlier ones.
 
 
 def run_roi(nii: str | Path, out_file: Path | str | None, gpu=None, ddevice="cuda", dataset_id=278, keep_size=False, override=False):

@@ -1,6 +1,25 @@
 # TotalVibeSegmentator:  Full Body MRI Segmentation for the NAKO and UK Biobank 
 
 ![3D Render](/imgs/3d_render_github.png)
+
+## Versions
+
+You can select older versions with `--dataset_id [ID]`
+
+|ID   |             NAME             | Version                       |Modality       | Resolution          |Link|
+|---  | ----------------             | ------------------------------|--------       | --------------------|----|
+|99   |TotalVIBESegmentator          | publication version (current) | MRI/CT        | axial 1.41 mm, S=3mm|[preprint](https://arxiv.org/abs/2406.00125)|
+|278  |Splits the body in 11 regions |current                        | NAKO VIBE-only| iso 4 mm            |    |
+|282  |Torso Water-Fat-swap detection|current      | multi-echo-Vibe VIBE  | axial 1.41 mm, S=3mm|[preprint](https://arxiv.org/abs/2502.14659); [See also](https://github.com/robert-graf/MAGO-SP)|
+|511  |Spine Vertebra instance       |                               | VIBE-only     | axial 1.41 mm, S=3mm|[See also](https://github.com/Hendrik-code/spineps) |
+|512  |Spine Vertebra subregion      |incorporated in SPINEPS       | VIBE-only     | axial 1.41 mm, S=3mm|[See also](https://github.com/Hendrik-code/spineps) |
+|520  | CT Bone segmentations        | preliminary                   | CT            | iso 0.8 mm          |     |
+<!---
+|80   |TotalVIBESegmentator          | preprint                      | MRI           | axial 1.41 mm, S=3mm|    |
+|85-87|TotalVIBESegmentator          | early preprint (deprecated)   | MRI           | axial 1.41 mm, S=3mm|    |
+|98   |TotalVIBESegmentator| preprint (deprecated-spinal channel bugged in CT)| MRI/CT| axial 1.41 mm, S=3mm|    |
+--->
+
 ## Installation Guide
 
 ### System Requirements
@@ -167,17 +186,6 @@ To run this script on your data, update the paths.
 |71|spinal_channel|
 |72|bone_other|
 
-## Versions
-
-You can select older (or new if your code is not updated with `git pull`) versions with `--dataset_id [ID]`
-
-|ID | NAME|
-| -------- | --------|
-|80|publication version|
-|85|preprint version|
-|86|repaired stomach (deprecated)|
-|87|better hyperparameter (deprecated)|
-|278|Splits the body in 11 regions|
 
 
 ## How to Cite
