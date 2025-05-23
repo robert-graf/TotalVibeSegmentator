@@ -84,7 +84,9 @@ def run_inference_on_file(
     og_nii = input_nii[0].copy()
 
     try:
-        zoom = plans_info["configurations"]["3d_fullres"]["spacing"][::-1]
+        zoom = plans_info["configurations"]["3d_fullres"]["spacing"]
+        order = plans_info["transpose_backward"]
+        zoom = [zoom[order[0]], zoom[order[1]], zoom[order[2]]][::-1]
     except Exception:
         pass
     assert len(ds_info["channel_names"]) == len(input_nii), (ds_info["channel_names"], len(input_nii), "\n", nnunet_path)
