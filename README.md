@@ -8,7 +8,7 @@ You can select older versions with `--dataset_id [ID]`
 
 |ID   |             NAME             | Version                       |Modality       | Resolution          |Link|
 |---  | ----------------             | ------------------------------|--------       | --------------------|----|
-|99   |TotalVIBESegmentator          | (current- trained with wrong resoluton)| MRI/CT        | axial 1.41 mm, R=3mm|[preprint](https://arxiv.org/abs/2406.00125)|
+|99   |TotalVIBESegmentator          | (current- trained with wrong resolution)| MRI/CT        | axial 1.41 mm, R=3mm|[preprint](https://arxiv.org/abs/2406.00125)|
 |98   |TotalVIBESegmentator| preprint (deprecated-spinal channel bugged in CT)| MRI| axial 1.41 mm, S=3mm|    |
 |278  |Splits the body in 11 regions |current                        | NAKO VIBE-only| iso 4 mm            |    |
 |282  |Torso Water-Fat-swap detection|current      | multi-echo-Vibe VIBE  | axial 1.41 mm, S=3mm|[preprint](https://arxiv.org/abs/2502.14659); [See also](https://github.com/robert-graf/MAGO-SP)|
