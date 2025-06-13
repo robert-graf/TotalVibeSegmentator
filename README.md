@@ -8,18 +8,22 @@ You can select older versions with `--dataset_id [ID]`
 
 |ID   |             NAME             | Version                       |Modality       | Resolution          |Link|
 |---  | ----------------             | ------------------------------|--------       | --------------------|----|
-|99   |TotalVIBESegmentator          | current (trained with wrong resolution)| MRI/CT        | axial 1.41 mm, R=3mm|[preprint](https://arxiv.org/abs/2406.00125)|
-|98   |TotalVIBESegmentator| current (deprecated-spinal channel bugged in CT)| MRI| axial 1.41 mm, S=3mm|    |
+|100  |TotalVIBESegmentator          | current                       | MRI/CT        | axial 1.41 mm, S=3mm|[preprint](https://arxiv.org/abs/2406.00125)|
+|99   |TotalVIBESegmentator          | current (sagittal resolution) | MRI/CT        | sagittal 1.41 mm, R=3mm|[preprint](https://arxiv.org/abs/2406.00125)|
 |278  |Splits the body in 11 regions |current                        | NAKO VIBE-only| iso 4 mm            |    |
-|282  |Torso Water-Fat-swap detection|current      | multi-echo-Vibe VIBE  | axial 1.41 mm, S=3mm|[preprint](https://arxiv.org/abs/2502.14659); [See also](https://github.com/robert-graf/MAGO-SP)|
+|282  |Torso Water-Fat-swap detection|current (use script from linked repo)      | multi-echo-Vibe VIBE  | axial 1.41 mm, S=3mm|[preprint](https://arxiv.org/abs/2502.14659); [Other Repo](https://github.com/robert-graf/MAGO-SP)|
 |511  |Spine Vertebra instance       |                               | VIBE-only     | axial 1.41 mm, S=3mm|[See also](https://github.com/Hendrik-code/spineps) |
 |512  |Spine Vertebra subregion      |incorporated in SPINEPS       | VIBE-only     | axial 1.41 mm, S=3mm|[See also](https://github.com/Hendrik-code/spineps) |
 |520  | CT Bone segmentations        | preliminary                   | CT            | iso 0.8 mm          |     |
-<!---
-|80   |TotalVIBESegmentator          | preprint                      | MRI           | axial 1.41 mm, S=3mm|    |
+
+### Outdated/deprecated
+
+|ID   |             NAME             | Version                       |Modality       | Resolution          |Link|
+|---  | ----------------             | ------------------------------|--------       | --------------------|----|
+|98   |TotalVIBESegmentator| (deprecated-spinal channel bugged in CT)| MRI| axial 1.41 mm, S=3mm|    |
+|80   |TotalVIBESegmentator          | preprint (deprecated)| MRI           | axial 1.41 mm, S=3mm|    |
 |85-87|TotalVIBESegmentator          | early preprint (deprecated)   | MRI           | axial 1.41 mm, S=3mm|    |
-|98   |TotalVIBESegmentator| preprint (deprecated-spinal channel bugged in CT)| MRI/CT| axial 1.41 mm, S=3mm|    |
---->
+
 
 ## Installation Guide
 
