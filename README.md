@@ -12,7 +12,7 @@ You can select older versions with `--dataset_id [ID]`
 |99   |TotalVIBESegmentator          | current (sagittal resolution) | MRI/CT        | sagittal 1.41 mm, R=3mm|[preprint](https://arxiv.org/abs/2406.00125)|
 |278  |Splits the body in 11 regions |current                        | NAKO VIBE-only| iso 4 mm            |    |
 |282  |Torso Water-Fat-swap detection|current (use script from linked repo)      | multi-echo-Vibe VIBE  | axial 1.41 mm, S=3mm|[preprint](https://arxiv.org/abs/2502.14659); [Other Repo](https://github.com/robert-graf/MAGO-SP)|
-|511  |Spine Vertebra instance       |                               | VIBE-only     | axial 1.41 mm, S=3mm|[See also](https://github.com/Hendrik-code/spineps) |
+|511  |Spine Vertebra instance       |Fast, but has Off-by-one errors. Use [SPINEPS](https://github.com/Hendrik-code/spineps) if this is not working for you.| VIBE-only     | axial 1.41 mm, S=3mm|[See also](https://github.com/Hendrik-code/spineps) |
 |512  |Spine Vertebra subregion      |incorporated in SPINEPS       | VIBE-only     | axial 1.41 mm, S=3mm|[See also](https://github.com/Hendrik-code/spineps) |
 |520  | CT Bone segmentations        | preliminary                   | CT            | iso 0.8 mm          |     |
 
